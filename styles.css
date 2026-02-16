@@ -32,23 +32,25 @@ html {
 body {
     font-family: var(--font);
     color: var(--color-navy);
-    min-height: 100vh;
+    height: 100vh;
     background: linear-gradient(135deg, var(--color-lavender) 0%, var(--color-ice) 25%, var(--color-mint) 50%, var(--color-lavender) 75%, var(--color-ice) 100%);
-    overflow-x: hidden;
+    overflow: hidden;
 }
 
 /* Page Wrapper - Glassmorphism Card */
 .page-wrapper {
     position: relative;
     max-width: 1200px;
-    margin: 30px auto;
-    min-height: calc(100vh - 60px);
+    margin: 20px auto;
+    height: calc(100vh - 40px);
     background: rgba(255, 255, 255, 0.35);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     border: 1px solid rgba(255, 255, 255, 0.5);
     border-radius: 24px;
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
 }
 
 /* Particle Canvas */
@@ -69,8 +71,22 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 20px 40px;
+    padding: 16px 40px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    flex-shrink: 0;
+}
+
+.nav-linkedin {
+    position: absolute;
+    right: 40px;
+    display: flex;
+    align-items: center;
+    opacity: 0.5;
+    transition: opacity 0.2s;
+}
+
+.nav-linkedin:hover {
+    opacity: 1;
 }
 
 .nav-logo {
@@ -98,8 +114,10 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     text-align: center;
-    padding: 80px 40px 60px;
+    padding: 24px 40px 20px;
+    flex: 1;
 }
 
 /* Badge */
@@ -113,18 +131,18 @@ body {
     font-size: 0.875rem;
     font-weight: 600;
     color: var(--color-navy);
-    margin-bottom: 32px;
+    margin-bottom: 20px;
     backdrop-filter: blur(10px);
 }
 
 /* Title */
 .hero-title {
-    font-size: 4rem;
+    font-size: 3.5rem;
     font-weight: 500;
     line-height: 1.15;
     letter-spacing: -0.03em;
     color: var(--color-navy);
-    margin-bottom: 24px;
+    margin-bottom: 16px;
 }
 
 .hero-title .highlight {
@@ -137,7 +155,7 @@ body {
     line-height: 1.7;
     color: var(--color-navy);
     opacity: 0.65;
-    margin-bottom: 40px;
+    margin-bottom: 24px;
     max-width: 600px;
 }
 
@@ -151,7 +169,7 @@ body {
     padding: 6px 6px 6px 28px;
     width: 100%;
     max-width: 520px;
-    margin-bottom: 28px;
+    margin-bottom: 0;
     transition: box-shadow 0.3s, border-color 0.3s;
 }
 
@@ -199,18 +217,31 @@ body {
     transform: translateY(0);
 }
 
-/* Form Stack Animation */
+/* Form Stack Animation
+   Story: 1 form typing → splits into 3 filled → stacks & sends
+   Total cycle: 6s
+   0–15%    Single form, lines fill in one by one
+   15–20%   Pause with filled form
+   20–45%   Form splits into 3 (left, center, right) with checks appearing
+   45–65%   Pause showing 3 filled forms
+   65–80%   Forms collapse back into a stack
+   80–90%   Stack slides up and fades (sent)
+   90–100%  Reset / pause before loop
+*/
+
 .form-stack {
     position: relative;
-    width: 280px;
-    height: 200px;
-    margin-top: 40px;
+    width: 360px;
+    height: 160px;
+    margin-top: 20px;
+    flex-shrink: 0;
 }
 
 .form-card {
     position: absolute;
-    width: 240px;
+    width: 200px;
     left: 50%;
+    bottom: 30px;
     transform: translateX(-50%);
     background: var(--color-white);
     border-radius: 12px;
@@ -219,25 +250,24 @@ body {
     border: 1px solid rgba(0, 0, 84, 0.06);
 }
 
-.form-card.card-3 {
-    bottom: 0;
-    transform: translateX(-50%) scale(0.88);
-    opacity: 0.4;
-    animation: stackCard3 3s ease-in-out infinite;
+/* Origin card — center, always starts visible */
+.form-card.card-origin {
+    z-index: 3;
+    animation: originCard 6s ease-in-out infinite;
 }
 
-.form-card.card-2 {
-    bottom: 16px;
-    transform: translateX(-50%) scale(0.94);
-    opacity: 0.65;
-    animation: stackCard2 3s ease-in-out infinite;
+/* Left duplicate */
+.form-card.card-left {
+    z-index: 2;
+    opacity: 0;
+    animation: splitLeft 6s ease-in-out infinite;
 }
 
-.form-card.card-1 {
-    bottom: 32px;
-    transform: translateX(-50%) scale(1);
-    opacity: 1;
-    animation: stackCard1 3s ease-in-out infinite;
+/* Right duplicate */
+.form-card.card-right {
+    z-index: 2;
+    opacity: 0;
+    animation: splitRight 6s ease-in-out infinite;
 }
 
 .form-card-bar {
@@ -247,6 +277,14 @@ body {
     border-radius: 4px;
     margin-bottom: 14px;
     opacity: 0.8;
+}
+
+.form-card-bar.bar-teal {
+    background: var(--color-teal);
+}
+
+.form-card-bar.bar-sky {
+    background: var(--color-sky);
 }
 
 .form-card-line {
@@ -261,47 +299,130 @@ body {
 }
 
 .form-card-line.w80 { width: 80%; }
-.form-card-line.w75 { width: 75%; }
-.form-card-line.w70 { width: 70%; }
 .form-card-line.w65 { width: 65%; }
-.form-card-line.w60 { width: 60%; }
 .form-card-line.w55 { width: 55%; }
-.form-card-line.w50 { width: 50%; }
-.form-card-line.w45 { width: 45%; }
+
+/* Lines that animate filling in on origin card */
+.card-origin .line-fill {
+    animation: lineFill 6s ease-in-out infinite;
+}
+
+.card-origin .line-fill:nth-child(2) {
+    animation-delay: 0s;
+}
+
+.card-origin .line-fill:nth-child(3) {
+    animation-delay: 0.3s;
+}
+
+.card-origin .line-fill:nth-child(4) {
+    animation-delay: 0.6s;
+}
+
+/* Filled lines on duplicate cards */
+.line-filled {
+    background: var(--color-periwinkle);
+}
 
 .form-card-check {
     position: absolute;
     top: 14px;
     right: 16px;
-    width: 28px;
-    height: 28px;
+    width: 24px;
+    height: 24px;
     background: rgba(2, 227, 211, 0.12);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    animation: checkPop 3s ease-in-out infinite;
+    opacity: 0;
+    transform: scale(0);
+    animation: checkPop 6s ease-in-out infinite;
 }
 
-@keyframes stackCard1 {
-    0%, 100% { transform: translateX(-50%) scale(1) translateY(0); }
-    50% { transform: translateX(-50%) scale(1) translateY(-6px); }
+/* Send indicator */
+.send-indicator {
+    position: absolute;
+    left: 50%;
+    bottom: 50px;
+    transform: translateX(-50%) scale(0);
+    opacity: 0;
+    z-index: 10;
+    width: 36px;
+    height: 36px;
+    background: rgba(39, 64, 252, 0.08);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: sendPulse 6s ease-in-out infinite;
 }
 
-@keyframes stackCard2 {
-    0%, 100% { transform: translateX(-50%) scale(0.94) translateY(0); }
-    50% { transform: translateX(-50%) scale(0.94) translateY(-3px); }
+/* === KEYFRAMES === */
+
+/* Lines fill in: empty → colored */
+@keyframes lineFill {
+    0%, 2%   { background: var(--color-lavender); width: 0%; }
+    10%, 100% { background: var(--color-periwinkle); }
+    5%       { width: 40%; }
+    12%      { width: 80%; }
 }
 
-@keyframes stackCard3 {
-    0%, 100% { transform: translateX(-50%) scale(0.88) translateY(0); }
-    50% { transform: translateX(-50%) scale(0.88) translateY(-1px); }
+/* Origin: center → shrinks slightly during split → stacks → sends up → resets */
+@keyframes originCard {
+    0%       { transform: translateX(-50%) scale(1); opacity: 1; }
+    20%      { transform: translateX(-50%) scale(1); opacity: 1; }
+    /* Split phase — origin stays center */
+    35%      { transform: translateX(-50%) scale(0.95); opacity: 1; }
+    50%      { transform: translateX(-50%) scale(0.95); opacity: 1; }
+    /* Collapse into stack */
+    65%      { transform: translateX(-50%) scale(1) translateY(0); opacity: 1; }
+    /* Send up */
+    78%      { transform: translateX(-50%) scale(0.9) translateY(-30px); opacity: 0; }
+    79%, 95% { transform: translateX(-50%) scale(0.8); opacity: 0; }
+    /* Reset */
+    100%     { transform: translateX(-50%) scale(1); opacity: 1; }
 }
 
+/* Left card: invisible → appears and moves left → collapses back → sends */
+@keyframes splitLeft {
+    0%, 20%  { transform: translateX(-50%) scale(0.9); opacity: 0; }
+    35%      { transform: translateX(-130%) scale(0.92); opacity: 1; }
+    50%      { transform: translateX(-130%) scale(0.92); opacity: 1; }
+    /* Collapse behind origin */
+    65%      { transform: translateX(-55%) scale(0.93) translateY(8px); opacity: 0.7; }
+    /* Send up */
+    78%      { transform: translateX(-55%) scale(0.85) translateY(-25px); opacity: 0; }
+    79%, 100% { opacity: 0; }
+}
+
+/* Right card: invisible → appears and moves right → collapses back → sends */
+@keyframes splitRight {
+    0%, 20%  { transform: translateX(-50%) scale(0.9); opacity: 0; }
+    35%      { transform: translateX(30%) scale(0.92); opacity: 1; }
+    50%      { transform: translateX(30%) scale(0.92); opacity: 1; }
+    /* Collapse behind origin */
+    65%      { transform: translateX(-45%) scale(0.90) translateY(16px); opacity: 0.5; }
+    /* Send up */
+    78%      { transform: translateX(-45%) scale(0.82) translateY(-20px); opacity: 0; }
+    79%, 100% { opacity: 0; }
+}
+
+/* Checkmarks appear after split */
 @keyframes checkPop {
-    0%, 40% { transform: scale(0); opacity: 0; }
-    55% { transform: scale(1.15); opacity: 1; }
-    65%, 100% { transform: scale(1); opacity: 1; }
+    0%, 32%  { transform: scale(0); opacity: 0; }
+    40%      { transform: scale(1.15); opacity: 1; }
+    50%, 60% { transform: scale(1); opacity: 1; }
+    70%      { transform: scale(1); opacity: 0; }
+    100%     { transform: scale(0); opacity: 0; }
+}
+
+/* Send arrow appears during send phase */
+@keyframes sendPulse {
+    0%, 62%  { transform: translateX(-50%) scale(0); opacity: 0; }
+    70%      { transform: translateX(-50%) scale(1); opacity: 1; }
+    78%      { transform: translateX(-50%) scale(1) translateY(-40px); opacity: 0; }
+    79%, 100% { transform: translateX(-50%) scale(0); opacity: 0; }
 }
 
 /* Success Overlay */
@@ -521,29 +642,29 @@ body {
 /* Responsive */
 @media (max-width: 768px) {
     .page-wrapper {
-        margin: 12px;
-        min-height: calc(100vh - 24px);
+        margin: 10px;
+        height: calc(100vh - 20px);
         border-radius: 16px;
     }
 
     .navbar {
-        padding: 16px 20px;
+        padding: 14px 20px;
+    }
+
+    .nav-linkedin {
+        right: 20px;
     }
 
     .hero {
-        padding: 60px 24px 40px;
+        padding: 20px 24px 16px;
     }
 
     .hero-title {
-        font-size: 2.4rem;
+        font-size: 2.2rem;
     }
 
     .hero-subtitle {
-        font-size: 0.95rem;
-    }
-
-    .hero-subtitle br {
-        display: none;
+        font-size: 0.9rem;
     }
 
     .email-form {
@@ -557,13 +678,13 @@ body {
     }
 
     .form-stack {
-        width: 220px;
-        height: 170px;
+        width: 280px;
+        height: 130px;
     }
 
     .form-card {
-        width: 190px;
-        padding: 14px 16px;
+        width: 150px;
+        padding: 12px 14px;
     }
 
     .admin-panel {
@@ -578,7 +699,11 @@ body {
 
 @media (max-width: 480px) {
     .hero-title {
-        font-size: 1.9rem;
+        font-size: 1.8rem;
+    }
+
+    .badge {
+        margin-bottom: 14px;
     }
 
     .email-form {
@@ -599,8 +724,13 @@ body {
         border-radius: 16px;
     }
 
-    .social-proof {
-        flex-direction: column;
-        gap: 6px;
+    .form-stack {
+        width: 240px;
+        height: 120px;
+    }
+
+    .form-card {
+        width: 130px;
+        padding: 10px 12px;
     }
 }

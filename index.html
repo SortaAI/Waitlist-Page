@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sorta - Join the Waitlist</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="page-wrapper">
+        <!-- Particle canvas -->
+        <canvas id="particles"></canvas>
+
+        <!-- Navigation -->
+        <nav class="navbar">
+            <div class="nav-logo">
+                <img src="logo.svg" alt="Sorta" class="logo-icon">
+                <span class="logo-text">Sorta</span>
+            </div>
+        </nav>
+
+        <!-- Hero Section -->
+        <main class="hero">
+            <div class="badge">
+                <span>Join Waitlist</span>
+            </div>
+
+            <h1 class="hero-title">
+                Type It Once.<br>
+                Every Form, <span class="highlight">Sorted.</span>
+            </h1>
+
+            <p class="hero-subtitle">
+                Sorta automates repetitive paperwork for outpatient clinics — so your staff stops copying the same patient details across every form, every visit.
+            </p>
+
+            <!-- Formspree form — your email is never exposed in client code -->
+            <form class="email-form" id="waitlistForm" action="" method="POST">
+                <input type="email" name="email" placeholder="Enter your email" class="email-input" id="emailInput" required>
+                <!-- Honeypot anti-spam field (hidden from real users) -->
+                <input type="text" name="_gotcha" style="display:none">
+                <button type="submit" class="btn-join" id="joinBtn">Join Waitlist</button>
+            </form>
+
+            <!-- Animated form stack -->
+            <div class="form-stack">
+                <div class="form-card card-3">
+                    <div class="form-card-bar"></div>
+                    <div class="form-card-line w70"></div>
+                    <div class="form-card-line w50"></div>
+                    <div class="form-card-line w80"></div>
+                </div>
+                <div class="form-card card-2">
+                    <div class="form-card-bar"></div>
+                    <div class="form-card-line w60"></div>
+                    <div class="form-card-line w75"></div>
+                    <div class="form-card-line w45"></div>
+                </div>
+                <div class="form-card card-1">
+                    <div class="form-card-bar"></div>
+                    <div class="form-card-line w80"></div>
+                    <div class="form-card-line w55"></div>
+                    <div class="form-card-line w65"></div>
+                    <div class="form-card-check">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--color-teal)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="20 6 9 17 4 12"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Success overlay -->
+        <div class="success-overlay" id="successOverlay">
+            <div class="success-content">
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#000054" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                    <polyline points="22 4 12 14.01 9 11.01"/>
+                </svg>
+                <h2>You're on the list!</h2>
+                <p>We'll notify you when Sorta launches.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Panel (hidden, accessible via Ctrl+Shift+A) -->
+    <div class="admin-overlay" id="adminOverlay">
+        <div class="admin-panel">
+            <div class="admin-header">
+                <h2>Waitlist Signups</h2>
+                <button class="admin-close" id="adminClose">&times;</button>
+            </div>
+            <div class="admin-stats">
+                <div class="stat-card">
+                    <span class="stat-number" id="totalSignups">0</span>
+                    <span class="stat-label">Total Signups</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number" id="todaySignups">0</span>
+                    <span class="stat-label">Today</span>
+                </div>
+            </div>
+            <div class="admin-actions">
+                <button class="admin-btn" id="exportCsv">Export CSV</button>
+                <button class="admin-btn danger" id="clearSignups">Clear All</button>
+            </div>
+            <div class="admin-list" id="signupList">
+                <p class="empty-state">No signups yet</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

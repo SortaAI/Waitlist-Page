@@ -1,6 +1,3 @@
-const FORMSPREE_ID = 'xvzbaezr';
-
-
 // Floating particles
 (function initParticles() {
     const canvas = document.getElementById('particles');
@@ -125,17 +122,16 @@ const SignupStore = {
 
         // Save locally
         SignupStore.add(email);
-        if (FORMSPREE_ID !== 'YOUR_FORMSPREE_ID') {
-            try {
-                await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email }),
-                });
-            } catch (err) {
-                // Formspree send failed, but local save succeeded — that's okay
-                console.warn('Formspree submission failed:', err);
-            }
+
+        // Send to serverless proxy (Formspree ID stays in env vars, never in client code)
+        try {
+            await fetch('/api/waitlist', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email }),
+            });
+        } catch (err) {
+            console.warn('Submission failed:', err);
         }
 
         // Show success

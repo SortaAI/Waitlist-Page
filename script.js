@@ -123,7 +123,6 @@ const SignupStore = {
         // Save locally
         SignupStore.add(email);
 
-        // Send to serverless proxy (Formspree ID stays in env vars, never in client code)
         try {
             await fetch('/api/waitlist', {
                 method: 'POST',
@@ -146,9 +145,7 @@ const SignupStore = {
     });
 })();
 
-// ==========================================
-// Admin Panel (Ctrl+Shift+A to open)
-// ==========================================
+
 (function initAdmin() {
     const adminOverlay = document.getElementById('adminOverlay');
     const adminClose = document.getElementById('adminClose');
@@ -194,7 +191,6 @@ const SignupStore = {
         adminOverlay.classList.remove('active');
     }
 
-    // Keyboard shortcut: Ctrl+Shift+A (or Cmd+Shift+A on Mac)
     document.addEventListener('keydown', (e) => {
         if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key === 'A') {
             e.preventDefault();
